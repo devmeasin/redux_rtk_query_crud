@@ -2,12 +2,12 @@
     "compilerOptions": {
         "baseUrl": "src",
         "paths": {
-            "@/routes/*": ["/routes/*"],
-            "@/state/*": ["/state/*"],
-            "@/pages/*": ["/pages/*"],
-            "@/static/*": ["/static/*"],
-            "@/components/*": ["/components/*"],
-            "@/services/*": ["/services/*"],
+            "routes/*": ["/routes/*"],
+            "state/*": ["/state/*"],
+            "pages/*": ["/pages/*"],
+            "static/*": ["/public/static/*"],
+            "components/*": ["/components/*"],
+            "services/*": ["/services/*"],
         },
     }
 }

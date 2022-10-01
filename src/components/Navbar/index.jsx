@@ -1,7 +1,8 @@
 import { useState } from 'react';
-import { createStyles, Header, Container, Group, Burger, Paper, Transition, Title } from '@mantine/core';
+import { createStyles, Header, Container, Group, Burger, Paper, Transition, Title, Button, Center } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Link } from 'react-router-dom';
+import Modal from '@/components/Modal'
 
 const HEADER_HEIGHT = 60;
 
@@ -13,6 +14,7 @@ const useStyles = createStyles((theme) => ({
 
     dropdown: {
         position: 'absolute',
+        padding: '10px',
         top: HEADER_HEIGHT,
         left: 0,
         right: 0,
@@ -46,92 +48,45 @@ const useStyles = createStyles((theme) => ({
         },
     },
 
-    link: {
-        display: 'block',
-        lineHeight: 1,
-        padding: '8px 12px',
-        borderRadius: theme.radius.sm,
-        textDecoration: 'none',
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7],
-        fontSize: theme.fontSizes.sm,
-        fontWeight: 500,
 
-        '&:hover': {
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-        },
-
-        [theme.fn.smallerThan('sm')]: {
-            borderRadius: 0,
-            padding: theme.spacing.md,
-        },
-    },
-
-    linkActive: {
-        '&, &:hover': {
-            backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
-            color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
-        },
-    },
 }));
 
-const links = [
-    {
-        "link": "/about",
-        "label": "Features"
-    },
-    {
-        "link": "/pricing",
-        "label": "Pricing"
-    },
-    {
-        "link": "/learn",
-        "label": "Learn"
-    },
-    {
-        "link": "/community",
-        "label": "Community"
-    }
-]
 
 
 export const Navbar = () => {
+
     const [opened, { toggle, close }] = useDisclosure(false);
-    const [active, setActive] = useState(links[0].link);
+    const [modalOpened, setModalOpened] = useState(false);
     const { classes, cx } = useStyles();
 
-    const items = links.map((link) => (
-        <a
-            key={link.label}
-            href={link.link}
-            className={cx(classes.link, { [classes.linkActive]: active === link.link })}
-            onClick={(event) => {
-                event.preventDefault();
-                setActive(link.link);
-                close();
-            }}
-        >
-            {link.label}
-        </a>
-    ));
-
     return (
-        <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
-            <Container size="95%" className={classes.header}>
-                <Title order={4}><Link to='/'>Hello JSX</Link></Title>
-                <Group spacing={5} className={classes.links}>
-                    {items}
-                </Group>
+        <>
+            <Header height={HEADER_HEIGHT} mb={20} className={classes.root}>
+                <Container size="95%" className={classes.header}>
+                    <Title order={4}><Link to='/'>Hello JSX</Link></Title>
+                    <Group className={classes.links}>
+                        <Button variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }} radius="md" size="md" compact onClick={() => setModalOpened(true)}>
+                            Add Student
+                        </Button>
+                    </Group>
 
-                <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
+                    <Burger opened={opened} onClick={toggle} className={classes.burger} size="sm" />
 
-                <Transition transition="pop-top-right" duration={200} mounted={opened}>
-                    {(styles) => (
-                        <Paper className={classes.dropdown} withBorder style={styles}>
-                            {items}
-                        </Paper>
-                    )}
-                </Transition>
-            </Container>
-        </Header>
+                    <Transition transition="pop-top-right" duration={200} mounted={opened}>
+                        {(styles) => (
+                            <Paper className={classes.dropdown} withBorder style={styles}>
+                                <Center>
+                                    <Button variant="gradient" gradient={{ from: 'teal', to: 'lime', deg: 105 }} radius="md" size="md" compact onClick={() => setModalOpened(true)}>
+                                        Add Student
+                                    </Button>
+                                </Center>
+                            </Paper>
+                        )}
+                    </Transition>
+                </Container>
+            </Header>
+
+            <Modal modalOpened={modalOpened} setModalOpened={setModalOpened} />
+        </>
     );
 }
